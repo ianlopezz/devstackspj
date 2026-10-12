@@ -11,7 +11,7 @@ const totalTasks = document.querySelector("#total-tasks");
 const pendingTasks = document.querySelector("#pending-tasks");
 const completedTasks = document.querySelector("#completed-tasks");
 
-import { createTask, isValidTask, filterTasks, getTaskStats } from "./taskmanager.js";
+import { createTask, isValidTask, filterTasks, getTaskStats } from "./taskManager.js";
 
 function saveTasks() {
   localStorage.setItem("devtasks", JSON.stringify(tasks));

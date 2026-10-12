@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isValidTask, createTask, filterTasks, getTaskStats } from '../js/taskmanager.js';
+import { isValidTask, createTask, filterTasks, getTaskStats } from '../js/taskManager.js';
 
 describe("isValidTask", () => {
   it("accepta una tasca amb text", () => {
