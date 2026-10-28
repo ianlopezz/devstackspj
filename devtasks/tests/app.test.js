@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { isValidTask, createTask, filterTasks, getTaskStats } from '../js/taskManager.js';
+import {
+  isValidTask,
+  createTask,
+  filterTasks,
+  getTaskStats,
+  clearCompletedTasks
+} from '../js/taskManager.js';
 
 describe("isValidTask", () => {
   it("accepta una tasca amb text", () => {
@@ -13,6 +19,10 @@ describe("isValidTask", () => {
   it("rebutja una tasca formada només per espais", () => {
     expect(isValidTask("   ")).toBe(false);
   });
+
+  it("rebutja un valor que no és text", () => {
+    expect(isValidTask(null)).toBe(false);
+  });
 });
 
 describe("createTask", () => {
@@ -22,6 +32,10 @@ describe("createTask", () => {
     expect(task.text).toBe("Fer els tests");
     expect(task.completed).toBe(false);
     expect(task.id).toBeDefined();
+  });
+
+  it("elimina els espais sobrants del text", () => {
+    expect(createTask("  Revisar el projecte  ").text).toBe("Revisar el projecte");
   });
 });
 
@@ -42,6 +56,10 @@ describe("filterTasks", () => {
   it("retorna només les tasques completades", () => {
     expect(filterTasks(tasks, "completed")).toHaveLength(1);
   });
+
+  it("retorna totes les tasques amb un filtre desconegut", () => {
+    expect(filterTasks(tasks, "unknown")).toBe(tasks);
+  });
 });
 
 describe("getTaskStats", () => {
@@ -57,5 +75,24 @@ describe("getTaskStats", () => {
       pending: 2,
       completed: 1
     });
+  });
+
+  it("retorna estadístiques a zero per a una llista buida", () => {
+    expect(getTaskStats([])).toEqual({ total: 0, pending: 0, completed: 0 });
+  });
+});
+
+describe("clearCompletedTasks", () => {
+  it("retorna una nova llista sense les tasques completades", () => {
+    const tasks = [
+      { id: 1, text: "Tasca pendent", completed: false },
+      { id: 2, text: "Tasca completada", completed: true }
+    ];
+
+    const remainingTasks = clearCompletedTasks(tasks);
+
+    expect(remainingTasks).toEqual([tasks[0]]);
+    expect(remainingTasks).not.toBe(tasks);
+    expect(tasks).toHaveLength(2);
   });
 });
